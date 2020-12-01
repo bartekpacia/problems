@@ -11,7 +11,7 @@ import (
 )
 
 func main() {
-	tables := make([]int, 0, 100)
+	plateNumbers := make([]int, 0, 100)
 
 	file, err := os.Open("test.txt")
 	if err != nil {
@@ -27,19 +27,19 @@ func main() {
 
 		text = strings.Replace(text, "\n", "", 1)
 
-		num, err := strconv.Atoi(text)
+		numberOfPlates, err := strconv.Atoi(text)
 		if err != nil {
 			log.Fatalln("error parsing int:", err)
 		}
 
-		if num == 0 {
+		if numberOfPlates == 0 {
 			break
 		}
 
-		tables = append(tables, num)
+		plateNumbers = append(plateNumbers, numberOfPlates)
 	}
 
-	for _, tableCount := range tables {
+	for _, tableCount := range plateNumbers {
 		buildingCount, err := solve(tableCount)
 		if err != nil {
 			fmt.Println("Niepoprawne!")
@@ -50,21 +50,21 @@ func main() {
 	}
 }
 
-func solve(tableCount int) (int, error) {
-	buildingNumber := 1
-	for tableCount > 0 {
-		numOfDigits := numberOfDigits(buildingNumber)
-		tableCount -= numOfDigits
+func solve(countOfPlates int) (int, error) {
+	numberOfBuildings := 1
+	for countOfPlates > 0 {
+		numOfDigits := numberOfDigits(numberOfBuildings)
+		countOfPlates -= numOfDigits
 
-		buildingNumber++
+		numberOfBuildings++
 	}
 
-	if tableCount != 0 {
+	if countOfPlates != 0 {
 		return 0, errors.New("tables weren't zeroed out")
 	}
 
-	buildingCount := buildingNumber - 1
-	return buildingCount, nil
+	countOfBuildings := numberOfBuildings - 1
+	return countOfBuildings, nil
 }
 
 func numberOfDigits(num int) (digits int) {
