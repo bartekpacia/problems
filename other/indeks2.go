@@ -2,6 +2,7 @@ package main
 
 import (
 	"bufio"
+	"errors"
 	"fmt"
 	"log"
 	"os"
@@ -9,28 +10,24 @@ import (
 	"strings"
 )
 
-// 101
-// 192
-// 32
-// 12493
-// 0
-
 func main() {
-	// fmt.Printf("%d\n", numberOfDigits(1))
-	// fmt.Printf("%d\n", numberOfDigits(10))
-	// fmt.Printf("%d\n", numberOfDigits(100))
-	// fmt.Printf("%d\n", numberOfDigits(1000))
+	tables := make([]int, 0, 100)
 
-	var tables []int64
-	tables = make([]int64, 0, 100)
+	file, err := os.Open("test.txt")
+	if err != nil {
+		log.Fatalln("error opening test.txt:", err)
+	}
 
-	reader := bufio.NewReader(os.Stdin)
+	reader := bufio.NewReader(file)
 	for {
-		text, _ := reader.ReadString('\n')
+		text, err := reader.ReadString('\n')
+		if err != nil {
+			log.Fatalln("error reading from reader:", err)
+		}
 
 		text = strings.Replace(text, "\n", "", 1)
 
-		num, err := strconv.ParseInt(text, 10, 32)
+		num, err := strconv.Atoi(text)
 		if err != nil {
 			log.Fatalln("error parsing int:", err)
 		}
@@ -40,37 +37,41 @@ func main() {
 		}
 
 		tables = append(tables, num)
+	}
 
-		buildingCount, err := solve(num)
+	for _, tableCount := range tables {
+		buildingCount, err := solve(tableCount)
 		if err != nil {
 			fmt.Println("Niepoprawne!")
+		} else {
+			fmt.Println(buildingCount)
 		}
 
-		fmt.Println(buildingCount)
-
 	}
-	fmt.Print("Enter text: ")
 }
 
-func solve(tableCount int64) (buildingCount int64, err error) {
-	fmt.Println("number:", tableCount)
+func solve(tableCount int) (int, error) {
+	buildingNumber := 1
+	for tableCount > 0 {
+		numOfDigits := numberOfDigits(buildingNumber)
+		tableCount -= numOfDigits
 
-	var i int64 = 1
-	for tableCount <= 0 {
-		numOfDigits := numberOfDigits(i)
-		tableCount = tableCount - numOfDigits
-
-		i++
+		buildingNumber++
 	}
 
+	if tableCount != 0 {
+		return 0, errors.New("tables weren't zeroed out")
+	}
+
+	buildingCount := buildingNumber - 1
 	return buildingCount, nil
 }
 
-func numberOfDigits(num int64) (liczbaCyfr int64) {
+func numberOfDigits(num int) (digits int) {
 	for num > 0 {
-		liczbaCyfr++
+		digits++
 		num = num / 10
 	}
 
-	return liczbaCyfr
+	return digits
 }
