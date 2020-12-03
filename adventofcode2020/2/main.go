@@ -14,7 +14,7 @@ import (
 type rule struct {
 	min  int
 	max  int
-	char string
+	char rune
 	pass string
 }
 
@@ -48,7 +48,7 @@ func main() {
 		max, _ := strconv.Atoi(maxStr)
 
 		split3 := strings.SplitN(rest2, ":", 2)
-		char := split3[0]
+		char := rune(split3[0][0])
 		rest3 := split3[1]
 
 		pass := strings.TrimPrefix(rest3, " ")
@@ -57,13 +57,16 @@ func main() {
 		rules = append(rules, input)
 	}
 
+	fmt.Printf("valid rules (part 1): %d\n", solvePart1(rules))
+	fmt.Printf("valid rules (part 2): %d\n", solvePart2(rules))
+}
+
+func solvePart1(rules []rule) int {
 	validRules := 0
 	for _, rule := range rules {
-		// fmt.Printf("min: %d, max: %d, char: %s, pass: %s\n", input.min, input.max, input.char, input.pass)
-
 		count := 0
 		for _, char := range rule.pass {
-			if string(char) == rule.char {
+			if char == rule.char {
 				count++
 			}
 		}
@@ -73,5 +76,44 @@ func main() {
 		}
 	}
 
-	fmt.Printf("valid rules: %d\n", validRules)
+	return validRules
+}
+
+func solvePart2(rules []rule) int {
+	validRules := 0
+
+	for _, rule := range rules {
+
+		fmt.Printf("%d-%d %c: %s\n", rule.min, rule.max, rule.char, rule.pass)
+		presentAtMin := false
+		i := rule.min - 1
+		first := rune(rule.pass[i])
+		if first == rule.char {
+			fmt.Println("first:", first)
+			fmt.Printf("rune %c is present at real index %d (imaginary %d)\n", rule.char, i, rule.min)
+			presentAtMin = true
+		} else {
+			fmt.Printf("rune %c is NOT present at real index %d (imaginary %d)\n", rule.char, i, rule.min)
+		}
+
+		presentAtMax := false
+		j := rule.max - 1
+		second := rune(rule.pass[j])
+		if second == rule.char {
+			fmt.Println("second:", second)
+			fmt.Printf("rune %c is present at real index %d (imaginary %d)\n", rule.char, j, rule.max)
+			presentAtMax = true
+		} else {
+			fmt.Printf("rune %c is NOT present at real index %d (imaginary %d)\n", rule.char, j, rule.max)
+		}
+
+		if presentAtMin != presentAtMax {
+			validRules++
+			fmt.Println("---VALID---")
+		} else {
+			fmt.Println("---INVALID---")
+		}
+	}
+
+	return validRules
 }
