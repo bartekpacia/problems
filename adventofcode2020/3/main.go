@@ -44,10 +44,15 @@ func main() {
 		i++
 	}
 
-	printMap(m)
-	treesHit, m := solvePart1(m)
-	fmt.Println("trees hit:", treesHit)
-	printMap(m)
+	treesHit1 := solve(m, 3, 1)
+	treesHit2 := solve(m, 1, 1) *
+		solve(m, 3, 1) *
+		solve(m,5, 1) *
+		solve(m,7, 1) *
+		solve(m,1, 2)
+
+	fmt.Println("trees hit (part 1):", treesHit1)
+	fmt.Println("trees hit (part 2):", treesHit2)
 }
 
 func printMap(m [][]rune) {
@@ -59,29 +64,17 @@ func printMap(m [][]rune) {
 	}
 }
 
-func solvePart1(m [][]rune) (int, [][]rune) {
+func solve(m [][]rune, right int, down int) int {
 	treesHit := 0
 
-	j := 3
-	for i := 1; i < len(m); i+=1 {
+	j := right
+	for i := down; i < len(m); i+=down {
 		if m[i][j] == '#' {
 			treesHit++
-			m[i][j] = 'X'
-		} else {
-			m[i][j] = 'O'
 		}
 
-		j = (j + 3) % len(m[i])
-
-
-		//for j := 0; j < len(m[i]); j+=3 {
-		//	if m[i][j] == '#' {
-		//		treesHit++
-		//		m[i][j] = 'T'
-		//	}
-		//}
+		j = (j + right) % len(m[i])
 	}
 
-
-	return treesHit, m
+	return treesHit
 }
