@@ -14,7 +14,7 @@ import (
 type rule struct {
 	min  int
 	max  int
-	char string
+	char rune
 	pass string
 }
 
@@ -53,13 +53,12 @@ func main() {
 
 		pass := strings.TrimPrefix(rest3, " ")
 
-		input := rule{min: min, max: max, char: string(char), pass: pass}
+		input := rule{min: min, max: max, char: rune(char), pass: pass}
 		rules = append(rules, input)
 	}
 
 	fmt.Printf("valid rules (part 1): %d\n", solvePart1(rules))
 	fmt.Printf("valid rules (part 2): %d\n", solvePart2(rules))
-	fmt.Println(len(rules), cap(rules))
 }
 
 func solvePart1(rules []rule) int {
@@ -67,7 +66,7 @@ func solvePart1(rules []rule) int {
 	for _, rule := range rules {
 		count := 0
 		for _, char := range rule.pass {
-			if string(char) == rule.char {
+			if char == rule.char {
 				count++
 			}
 		}
@@ -83,37 +82,23 @@ func solvePart1(rules []rule) int {
 func solvePart2(rules []rule) int {
 	validRules := 0
 
-	for i, rule := range rules {
-		fmt.Println(i)
-
-		fmt.Printf("%d-%d %s: %s\n", rule.min, rule.max, rule.char, rule.pass)
+	for _, rule := range rules {
 		presentAtMin := false
 		i := rule.min - 1
-		first := string(rule.pass[i])
-		fmt.Println(first, rule.char)
+		first := rune(rule.pass[i])
 		if first == rule.char {
-			fmt.Printf("rune %s is present at real index %d (imaginary %d)\n", rule.char, i, rule.min)
 			presentAtMin = true
-		} else {
-			fmt.Printf("rune %s is NOT present at real index %d (imaginary %d)\n", rule.char, i, rule.min)
 		}
 
 		presentAtMax := false
 		j := rule.max - 1
-		second := string(rule.pass[j])
+		second := rune(rule.pass[j])
 		if second == rule.char {
-			fmt.Println("second:", second)
-			fmt.Printf("rune %s is present at real index %d (imaginary %d)\n", rule.char, j, rule.max)
 			presentAtMax = true
-		} else {
-			fmt.Printf("rune %s is NOT present at real index %d (imaginary %d)\n", rule.char, j, rule.max)
 		}
 
 		if presentAtMin != presentAtMax {
 			validRules++
-			fmt.Println("---VALID---")
-		} else {
-			fmt.Println("---INVALID---")
 		}
 	}
 
