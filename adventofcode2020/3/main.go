@@ -59,16 +59,29 @@ func printMap(m [][]rune) {
 	}
 }
 
-func solvePart1(m [][]rune) (treesHit int, n [][]rune) {
-	for i := 0; i < len(m); i+=1 {
-		for j := 0; j < len(m[i]); j+=3 {
-			if m[i][j] == '#' {
-				treesHit++
-				m[i][j] = 'T'
-			}
+func solvePart1(m [][]rune) (int, [][]rune) {
+	treesHit := 0
+
+	j := 3
+	for i := 1; i < len(m); i+=1 {
+		if m[i][j] == '#' {
+			treesHit++
+			m[i][j] = 'X'
+		} else {
+			m[i][j] = 'O'
 		}
+
+		j = (j + 3) % len(m[i])
+
+
+		//for j := 0; j < len(m[i]); j+=3 {
+		//	if m[i][j] == '#' {
+		//		treesHit++
+		//		m[i][j] = 'T'
+		//	}
+		//}
 	}
 
-	n = m
-	return treesHit, n
+
+	return treesHit, m
 }
