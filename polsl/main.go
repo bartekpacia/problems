@@ -13,7 +13,7 @@ import (
 func main() {
 	plateNumbers := make([]int, 0, 100)
 
-	file, err := os.Open("test.txt")
+	file, err := os.Open("num-01.in")
 	if err != nil {
 		log.Fatalln("error opening test.txt:", err)
 	}
