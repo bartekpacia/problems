@@ -14,7 +14,7 @@ import (
 type rule struct {
 	min  int
 	max  int
-	char rune
+	char string
 	pass string
 }
 
@@ -48,17 +48,18 @@ func main() {
 		max, _ := strconv.Atoi(maxStr)
 
 		split3 := strings.SplitN(rest2, ":", 2)
-		char := rune(split3[0][0])
+		char := split3[0][0]
 		rest3 := split3[1]
 
 		pass := strings.TrimPrefix(rest3, " ")
 
-		input := rule{min: min, max: max, char: char, pass: pass}
+		input := rule{min: min, max: max, char: string(char), pass: pass}
 		rules = append(rules, input)
 	}
 
 	fmt.Printf("valid rules (part 1): %d\n", solvePart1(rules))
 	fmt.Printf("valid rules (part 2): %d\n", solvePart2(rules))
+	fmt.Println(len(rules), cap(rules))
 }
 
 func solvePart1(rules []rule) int {
@@ -66,7 +67,7 @@ func solvePart1(rules []rule) int {
 	for _, rule := range rules {
 		count := 0
 		for _, char := range rule.pass {
-			if char == rule.char {
+			if string(char) == rule.char {
 				count++
 			}
 		}
@@ -82,29 +83,30 @@ func solvePart1(rules []rule) int {
 func solvePart2(rules []rule) int {
 	validRules := 0
 
-	for _, rule := range rules {
+	for i, rule := range rules {
+		fmt.Println(i)
 
-		fmt.Printf("%d-%d %c: %s\n", rule.min, rule.max, rule.char, rule.pass)
+		fmt.Printf("%d-%d %s: %s\n", rule.min, rule.max, rule.char, rule.pass)
 		presentAtMin := false
 		i := rule.min - 1
-		first := rune(rule.pass[i])
+		first := string(rule.pass[i])
+		fmt.Println(first, rule.char)
 		if first == rule.char {
-			fmt.Println("first:", first)
-			fmt.Printf("rune %c is present at real index %d (imaginary %d)\n", rule.char, i, rule.min)
+			fmt.Printf("rune %s is present at real index %d (imaginary %d)\n", rule.char, i, rule.min)
 			presentAtMin = true
 		} else {
-			fmt.Printf("rune %c is NOT present at real index %d (imaginary %d)\n", rule.char, i, rule.min)
+			fmt.Printf("rune %s is NOT present at real index %d (imaginary %d)\n", rule.char, i, rule.min)
 		}
 
 		presentAtMax := false
 		j := rule.max - 1
-		second := rune(rule.pass[j])
+		second := string(rule.pass[j])
 		if second == rule.char {
 			fmt.Println("second:", second)
-			fmt.Printf("rune %c is present at real index %d (imaginary %d)\n", rule.char, j, rule.max)
+			fmt.Printf("rune %s is present at real index %d (imaginary %d)\n", rule.char, j, rule.max)
 			presentAtMax = true
 		} else {
-			fmt.Printf("rune %c is NOT present at real index %d (imaginary %d)\n", rule.char, j, rule.max)
+			fmt.Printf("rune %s is NOT present at real index %d (imaginary %d)\n", rule.char, j, rule.max)
 		}
 
 		if presentAtMin != presentAtMax {
