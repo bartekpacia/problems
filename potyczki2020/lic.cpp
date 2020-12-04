@@ -14,8 +14,10 @@ int main() {
     input.push_back(val);
   }
 
+  cout << endl;
+
   for (int x : input) {
-    cout << x << " ";
+    cout << x << endl;
   }
 
   return 0;
