@@ -30,44 +30,17 @@ type passport struct {
 	cid int
 }
 
+// Grab retrieves all properties from vals and assigns them
+// to passport pointed to by p.
 func (p *passport) grab(vals map[string]string) {
-	var err error
-	if vals["byr"] != "0" {
-		p.byr, err = strconv.Atoi(vals["byr"])
-		if err != nil {
-			fmt.Printf("vals[byr] was %#v: %v\n", vals["byr"], err)
-		}
-	}
-	if vals["iyr"] != "0" {
-		p.iyr, err = strconv.Atoi(vals["iyr"])
-		if err != nil {
-			fmt.Printf("vals[iyr] was %#v: %v\n", vals["iyr"], err)
-		}
-	}
-	if vals["eyr"] != "0" {
-		p.eyr, err = strconv.Atoi(vals["eyr"])
-		if err != nil {
-			fmt.Printf("vals[eyr] was %#v: %v\n", vals["eyr"], err)
-		}
-	}
-	if vals["hgt"] != "0" {
-		p.hgt = vals["hgt"]
-	}
-	if vals["hcl"] != "0" {
-		p.hcl = vals["hcl"]
-	}
-	if vals["ecl"] != "0" {
-		p.ecl = vals["ecl"]
-	}
-	if vals["pid"] != "0" {
-		p.pid = vals["pid"]
-	}
-	if vals["cid"] != "0" {
-		p.cid, err = strconv.Atoi(vals["cid"])
-		if err != nil {
-			fmt.Printf("vals[cid] was %#v: %v\n", vals["cid"], err)
-		}
-	}
+	p.byr, _ = strconv.Atoi(vals["byr"])
+	p.iyr, _ = strconv.Atoi(vals["iyr"])
+	p.eyr, _ = strconv.Atoi(vals["eyr"])
+	p.hgt = vals["hgt"]
+	p.hcl = vals["hcl"]
+	p.ecl = vals["ecl"]
+	p.pid = vals["pid"]
+	p.cid, _ = strconv.Atoi(vals["cid"])
 }
 
 func (p *passport) isValid() bool {
@@ -121,20 +94,18 @@ func main() {
 
 			currentPassport[key] = val
 		}
-
-		// fmt.Println(len(splitties2), splitties2)
 	}
 
-	valid := 0
+	valid := solvePart1(passports)
+	fmt.Printf("valid passports (part 1): %d\n", valid)
+}
+
+func solvePart1(passports []passport) (valid int) {
 	for _, passport := range passports {
-		fmt.Printf("%#v\n", passport)
 		if passport.isValid() {
-			fmt.Println(passport.pid, "is valid")
 			valid++
-		} else {
-			fmt.Println(passport.pid, "is invalid")
 		}
 	}
 
-	fmt.Printf("valid passports (part 1): %d\n", valid)
+	return
 }
