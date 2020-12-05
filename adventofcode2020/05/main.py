@@ -8,7 +8,7 @@ class Seat:
   def __str__(self):
     return f"Seat: row: {self.row}, column: {self.column}"
 
-  def seat_id(self):
+  def seat_id(self) -> int:
     return self.row * 8 + self.column
 
 def decode_pass(encoded: str) -> Seat:
@@ -42,13 +42,18 @@ def decode_pass(encoded: str) -> Seat:
 
 def main():
   encoded_passes: List[Seat] = []
-  with open("test.txt", "r") as f:
+  with open("input.txt", "r") as f:
     for line in f:
       encoded_pass = line.strip()
 
       decoded = decode_pass(encoded_pass)
       encoded_passes.append(decoded)
-  for i, p in enumerate(encoded_passes):
-    print(i, str(p))
+
+  highest_seat_id = 0
+  for _, p in enumerate(encoded_passes):
+    if p.seat_id() > highest_seat_id:
+      highest_seat_id = p.seat_id()
+
+  print(f"highest seat ID (part 1): {highest_seat_id}")
 
 main()
