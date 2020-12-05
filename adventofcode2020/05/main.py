@@ -40,20 +40,24 @@ def decode_pass(encoded: str) -> Seat:
 
   return Seat(max_row, max_column)
 
+def solve_part_1(passes: List[Seat]) -> int:
+  highest_seat_id = 0
+  for p in passes:
+    if p.seat_id() > highest_seat_id:
+      highest_seat_id = p.seat_id()
+
+  return highest_seat_id
+
 def main():
-  encoded_passes: List[Seat] = []
+  passes: List[Seat] = []
   with open("input.txt", "r") as f:
     for line in f:
       encoded_pass = line.strip()
 
       decoded = decode_pass(encoded_pass)
-      encoded_passes.append(decoded)
+      passes.append(decoded)
 
-  highest_seat_id = 0
-  for _, p in enumerate(encoded_passes):
-    if p.seat_id() > highest_seat_id:
-      highest_seat_id = p.seat_id()
-
+  highest_seat_id = solve_part_1(passes)
   print(f"highest seat ID (part 1): {highest_seat_id}")
 
 main()
