@@ -49,18 +49,16 @@ def solve_part_1(passes: List[Seat]) -> int:
   return highest_seat_id
 
 def solve_part_2(passes: List[Seat]) -> int:
-  my_seat_id = None
   passes = sorted(passes, key=lambda p: p.seat_id())
-  index_of_min_id = min(range(len(passes)), key=lambda i: passes[i].seat_id())
-  index_of_max_id = max(range(len(passes)), key=lambda i: passes[i].seat_id())
-  print(f"{len(passes)=}, {index_of_min_id=} is {passes[index_of_min_id]}, {index_of_max_id=} is {passes[index_of_max_id]}")
 
-  first = 63
+  my_seat_id = None
+  i = 63
   for p in passes:
-    if first != p.seat_id():
-      print(f"may be mine ID: {first}")
-
-    first+=1
+    if i != p.seat_id():
+      my_seat_id = i
+      break
+    
+    i+=1
 
   return my_seat_id
 
