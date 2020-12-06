@@ -9,7 +9,7 @@ def solve_part_1(lines: list[str]) -> int:
       sum_of_yesses += len(current_yes_answers)
       current_yes_answers = set()
 
-  # Add set made from the last line, which is omitted in the loop above
+  # Add the set of answers from the last line, which is omitted in the "for" loop above.
   sum_of_yesses += len(current_yes_answers)
   
   return sum_of_yesses
@@ -33,17 +33,15 @@ def solve_part_2(lines: list[str]) -> int:
       current_yes_answers = dict()
       current_line_count = 0
 
-  # don't forget about the last group!
+  # Add the set of answers from the last line, which is omitted in the "for" loop above.
   all_groups_yes_answers.append(current_yes_answers)
   all_groups_line_count.append(current_line_count)
 
-  # iterate over alphabet  
   sum_of_yesses = 0
   for i in range(len(all_groups_yes_answers)):
     group = all_groups_yes_answers[i]
     group_line_count = all_groups_line_count[i]
 
-    print(f"num: {i + 1}, lines: {group_line_count} group: {group}")
     for char, occurrences in group.items():
       if occurrences == group_line_count:
         sum_of_yesses += 1 
