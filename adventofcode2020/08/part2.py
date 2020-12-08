@@ -3,7 +3,14 @@ acc = 0
 lines: list[str] = []
 executed = set()
 
-def parse(current):
+def parse_instruction(line: str) -> (str, int):
+  line = line.split()
+  cmd = line[0]
+  num = int(line[1])
+
+  return cmd, num
+
+def parse(prev, current):
   global acc, i
 
   if current == len(lines):
@@ -11,26 +18,36 @@ def parse(current):
     return
     
   if current in executed:
-    print(f"infinite loop detected! {acc=}, execution suspended")
+    print(f"infinite loop detected! line {current}, {acc=}, trying to fix...")
+    prev_cmd, prev_num = parse_instruction(lines[prev])
+    print(f"prev_num: {prev_num:+}")
+    if prev_cmd == "nop":
+      lines[prev] = f"jmp {prev_num:+}"
+      parse(current, prev)
+
+    elif prev_cmd == "jmp":
+      lines[prev] = f"nop {prev_num:+}"
+      parse(current, prev)
+
+    else:
+      print(f"wtf... {prev_cmd=}")
+      return
+    
     return
 
   executed.add(current)
+  cmd, num = parse_instruction(lines[current])
 
-  line = lines[current].split()
-  cmd = line[0]
-  arg = line[1]
-  num = int(arg)
-  
-  print(f"{i} parse({current}), {cmd} {arg} {acc=}")
+  print(f"{i} parse({current}), {cmd} {num:+} {acc=}")
   
   i += 1
   if cmd == "nop":
-    parse(current + 1)
+    parse(current, current + 1)
   elif cmd == "acc":
     acc += num
-    parse(current + 1)
+    parse(current, current + 1)
   elif cmd == "jmp":
-    parse(current + num)
+    parse(current, current + num)
 
 
 def main():
@@ -38,6 +55,6 @@ def main():
   with open("test.txt", "r") as f:
     lines = [line.strip() for line in f.readlines()]
 
-  parse(0)
+  parse(0, 0)
 
 main()
