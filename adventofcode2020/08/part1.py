@@ -30,9 +30,6 @@ def main():
   with open("input.txt", "r") as f:
     lines = [line.strip() for line in f.readlines()]
 
-  sline = lines[0].split()
-  cmd = sline[0]
-  num = int(sline[1])
   parse(0)
 
 main()
