@@ -18,22 +18,24 @@ def parse(prev, current):
     return
     
   if current in executed:
-    print(f"infinite loop detected! line {current}, {acc=}, trying to fix...")
-    prev_cmd, prev_num = parse_instruction(lines[prev])
-    print(f"prev_num: {prev_num:+}")
-    if prev_cmd == "nop":
-      lines[prev] = f"jmp {prev_num:+}"
-      parse(current, prev)
-
-    elif prev_cmd == "jmp":
-      lines[prev] = f"nop {prev_num:+}"
-      parse(current, prev)
-
-    else:
-      print(f"wtf... {prev_cmd=}")
-      return
-    
+    print(f"infinite loop detected! line {current}, {acc=}, execution suspended")
     return
+    # print(f"infinite loop detected! line {current}, {acc=}, trying to fix...")
+    # prev_cmd, prev_num = parse_instruction(lines[prev])
+    # print(f"prev_num: {prev_num:+}")
+    # if prev_cmd == "nop":
+    #   lines[prev] = f"jmp {prev_num:+}"
+    #   parse(current, prev)
+
+    # elif prev_cmd == "jmp":
+    #   lines[prev] = f"nop {prev_num:+}"
+    #   parse(current, prev)
+
+    # else:
+    #   print(f"wtf... {prev_cmd=}")
+    #   return
+    
+    # return
 
   executed.add(current)
   cmd, num = parse_instruction(lines[current])
@@ -49,12 +51,41 @@ def parse(prev, current):
   elif cmd == "jmp":
     parse(current, current + num)
 
+def generate_all_possible_sets():
+  test_lists: list[list[str]] = []
+
+  for j in range(len(lines)):
+    line = lines[j]
+    cmd, num = parse_instruction(line)
+    if cmd == "nop":
+      new_list: list[str] = lines.copy()
+      new_list[j] = f"jmp {num:+}"
+      test_lists.append(new_list)
+    elif cmd == "jmp":
+      new_list: list[str] = lines.copy()
+      new_list[j] = f"nop {num:+}"
+      test_lists.append(new_list)
+    else:
+      continue
+    
+  return test_lists
 
 def main():
-  global lines
-  with open("test.txt", "r") as f:
+  global lines, executed, acc
+  with open("input.txt", "r") as f:
     lines = [line.strip() for line in f.readlines()]
 
-  parse(0, 0)
+  
+  test_lists = generate_all_possible_sets()
+
+  for l in test_lists:
+    acc = 0
+    executed = set()
+    for i, elem in enumerate(l):
+      if "acc" not in elem:
+        print(i, elem)
+    lines = l
+    parse(0, 0)
+
 
 main()
