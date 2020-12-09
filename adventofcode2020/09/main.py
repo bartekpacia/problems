@@ -1,15 +1,15 @@
 from collections import deque
 
-preamble_len = 5
+PREAMBLE_LENGTH = 25
 
 def solve_part_1(lines: list[str]) -> int:
   invalid = None
-  last_segment = deque(maxlen=preamble_len)
+  last_segment = deque(maxlen=PREAMBLE_LENGTH)
 
-  for i in range(preamble_len):
+  for i in range(PREAMBLE_LENGTH):
     last_segment.append(lines[i])
 
-  for i in range(preamble_len, len(lines)):
+  for i in range(PREAMBLE_LENGTH, len(lines)):
     print(f"iterating at {i}")
     num = lines[i]
 
@@ -34,7 +34,7 @@ def solve_part_1(lines: list[str]) -> int:
 
 
 def main():
-  with open("test.txt") as f:
+  with open("input.txt") as f:
     lines = [int(l.strip()) for l in f.readlines()]
 
   invalid_num = solve_part_1(lines)
