@@ -32,7 +32,7 @@ def parse(acc: int, executed: set[int], prev: int, current: int) -> int | None:
 
   return res
 
-def generate_all_possible_sets():
+def generate_all_possible_sets() -> list[list[str]]:
   test_lists: list[list[str]] = []
 
   for j in range(len(lines)):
