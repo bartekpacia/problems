@@ -1,6 +1,6 @@
 from collections import deque
 
-PREAMBLE_LENGTH = 5
+PREAMBLE_LENGTH = 25
 
 def solve_part_1(lines: list[str]) -> int:
   invalid = None
@@ -24,37 +24,36 @@ def solve_part_1(lines: list[str]) -> int:
         break
 
     if not found_match:
-      print(f"invalid: {num}")
       invalid = num
+      return invalid
 
     last_segment.append(num)
 
-  return invalid
+  return -1 # wtf
 
 def solve_part_2(lines: list[str], target_num: int) -> int:
   begin = 0
   end = 1
 
   while begin < len(lines):
-    s = 0
+    invalid_range = []
     for i in range(begin, end):
-      s += lines[i]
+      invalid_range.append(lines[i])
 
-    if s < target_num:
+    if sum(invalid_range) < target_num:
       end += 1
-    elif s > target_num:
+    elif sum(invalid_range) > target_num:
       begin += 1
     else:
-      print(f"found range: {lines[begin:end]}")
-      return lines[begin] + lines[end]
+      return min(invalid_range) + max(invalid_range)
   
 
 def main():
-  with open("test.txt") as f:
+  with open("input.txt") as f:
     lines = [int(l.strip()) for l in f.readlines()]
 
   invalid_num = solve_part_1(lines)
-  print(f"INVALID: {invalid_num}")
+  print(f"invalid num (part 1): {invalid_num}")
   weakness = solve_part_2(lines, invalid_num)
   print(f"weakness (part 2): {weakness}")
 
