@@ -1,7 +1,6 @@
 def solve_part_1(lines: list[str]) -> int:
   diffs: dict[int, int] = dict()
   for i in range(len(lines)):
-    print(i, end=" ")
     if i == 0:
       prev = 0
     else:
@@ -9,7 +8,6 @@ def solve_part_1(lines: list[str]) -> int:
 
     current = lines[i]
     diff = current - prev
-    print(f"diff between {current=} and {prev=} = {diff}")
 
     if i == len(lines) - 1:
       diffs[3] += 1
@@ -19,8 +17,6 @@ def solve_part_1(lines: list[str]) -> int:
     else:
       diffs[diff] += 1
 
-  print(f"number of 1diff: {diffs[1]}")
-  print(f"number of 3diff: {diffs[3]}")
   return diffs[1] * diffs[3]
 
 def main():
