@@ -17,7 +17,13 @@ def solve_part_1(lines: list[str]) -> int:
     else:
       diffs[diff] += 1
 
+  print(diffs)
   return diffs[1] * diffs[3]
+
+def solve_part_2(lines: list[str]) -> int:
+  ways = 0
+
+  return ways
 
 def main():
   with open("input.txt", "r") as f:
