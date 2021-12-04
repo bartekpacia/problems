@@ -1,7 +1,7 @@
 numbers: list[int] = []
 boards: list[list[list[int]]] = []
 
-with open("sample.txt") as file:
+with open("input.txt") as file:
     numbers = [int(n) for n in file.readline().split(",")]
     file.readline()  # ignore first empty line
 
@@ -47,13 +47,27 @@ def is_winning(board: list[list[int]]) -> bool:
 
     return False
 
-for num in numbers:
-    pass
 
-for board in boards:
-    for i in range(len(board)):
-        for j in range(len(board[i])):
-            num = str(board[i][j])
-            print(f"{num:<3}", end="")
-        print()
-    print()
+def find_winning_board(
+    boards: list[list[list[int]]],
+) -> tuple[list[list[int]], int] | None:
+    for num in numbers:
+        for i in range(len(boards)):
+            boards[i] = [[n if n != num else -1 for n in row] for row in boards[i]]
+            if is_winning(boards[i]):
+                print(f"board {i} wins with num {num}")
+                return (boards[i], num)
+
+    return None
+
+
+res = find_winning_board(boards)
+if not res:
+    # Just to make Pylance happy. Will never happen.
+    exit(1)
+
+winning_board, num = res
+filtered_board = [[n if n != -1 else 0 for n in row] for row in winning_board]
+result = sum(sum(row) for row in filtered_board) * num
+
+print(result)
