@@ -20,6 +20,36 @@ with open("sample.txt") as file:
     boards.append(board)  # append the last row which is not handled above
 
 
+def is_winning(board: list[list[int]]) -> bool:
+    # check rows
+    for i in range(len(board)):
+        all_correct = True
+        for j in range(len(board[i])):
+            num = board[i][j]
+            if num != -1:
+                all_correct = False
+                break
+
+        if all_correct:
+            return True
+
+    # check columns
+    for i in range(len(board)):
+        all_correct = True
+        for j in range(len(board[i])):
+            num = board[j][i]
+            if num != -1:
+                all_correct = False
+                break
+
+        if all_correct:
+            return True
+
+    return False
+
+for num in numbers:
+    pass
+
 for board in boards:
     for i in range(len(board)):
         for j in range(len(board[i])):
