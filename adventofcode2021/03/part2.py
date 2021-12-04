@@ -5,14 +5,14 @@ with open("input.txt") as file:
         nums_str.append(line)
 
 
-def most_common_bit_in_pos(pos: int) -> int | None:
+def most_common_bit_in_pos(pos: int, items: list[str]) -> int | None:
     """
     returns 1 if 1 is more common, 0 if 0 is more common, None if they are
     equally common
     """
     zeros = 0
     ones = 0
-    for num_str in nums_str:
+    for num_str in items:
         if num_str[pos] == "0":
             zeros += 1
         elif num_str[pos] == "1":
@@ -26,14 +26,14 @@ def most_common_bit_in_pos(pos: int) -> int | None:
         return None
 
 
-def least_common_bit_in_pos(pos: int) -> int | None:
+def least_common_bit_in_pos(pos: int, items: list[str]) -> int | None:
     """
     returns 1 if 1 is less common, 0 if 0 is less common, None if they are
     equally common
     """
     zeros = 0
     ones = 0
-    for num_str in nums_str:
+    for num_str in items:
         if num_str[pos] == "0":
             zeros += 1
         elif num_str[pos] == "1":
@@ -47,42 +47,49 @@ def least_common_bit_in_pos(pos: int) -> int | None:
         return None
 
 
-# The problem is Step 3: Repeat the process! Don't take remove numbers into
-# account
+def calc_rating_1(nums: list[str], pos: int = 0) -> str:
+    print(f"::: {pos:}, {len(nums)=}")
+    if len(nums) == 1:
+        return nums[0]
+    else:
+        mcb = most_common_bit_in_pos(pos, nums)
+        print(f"returned mcb is {mcb}")
+        if mcb == None:
+            mcb = 1
+
+        print(f"mcb for {pos=} is {mcb}")
+
+        nums = [n for n in nums if n[pos] == str(mcb)]
+        for num in nums:
+            print(num)
+
+        pos += 1
+        return calc_rating_1(nums, pos)
 
 
-def calc_rating(least_common: bool = False) -> int | None:
-    filtered_nums: set[str] = set(nums_str)
-    for pos in range(12):
-        if least_common:
-            common_bit = least_common_bit_in_pos(pos)
-            print(f"lcb for {pos=}: {common_bit}")
-        else:
-            common_bit = most_common_bit_in_pos(pos)
-            print(f"mcb for {pos=}: {common_bit}")
-        if not common_bit:
-            if least_common:
-                common_bit = 0
-            else:
-                common_bit = 1
+def calc_rating_2(nums: list[str], pos: int = 0) -> str:
+    if len(nums) == 1:
+        return nums[0]
+    else:
+        lcb = least_common_bit_in_pos(pos, nums)
+        if lcb == None:
+            lcb = 0
 
-        common_bit = str(common_bit)
+        nums = [n for n in nums if n[pos] == str(lcb)]
 
-        for num in filtered_nums.copy():
-            bit = num[pos]
-            if bit != common_bit:
-                if num in filtered_nums:
-                    filtered_nums.remove(num)
-
-        print(len(filtered_nums))
-        if len(filtered_nums) == 1:
-            last_element = filtered_nums.pop()
-            print(f"{last_element=}")
-            return int(last_element, 2)
+        pos += 1
+        return calc_rating_2(nums, pos)
 
 
-generator_rating = calc_rating()
-scrubber_rating = calc_rating(least_common=True)
-# print(f"{generator_rating=}, {scrubber_rating=}")
+generator_rating = calc_rating_1(nums_str)
+scrubber_rating = calc_rating_2(nums_str)
+print(f"{generator_rating=}")
+print(f"{scrubber_rating=}")
 
-# print(generator_rating * scrubber_rating)
+print(int(generator_rating, 2) * int(scrubber_rating, 2))
+
+
+# lessons learned
+# 1. always make sure that you're comparing values of right type
+# 2. read full listings and descriptions!
+# 3. beware of truthy and falsy values!
