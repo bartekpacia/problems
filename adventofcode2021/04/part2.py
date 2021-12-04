@@ -60,7 +60,6 @@ def find_last_winning_board(
 
             boards[i] = [[n if n != num else -1 for n in row] for row in boards[i]]
             if is_winning(boards[i]):
-                print(f"board {i} wins with num {num}")
                 won_boards.add(i)
                 win_order.append((boards[i], num))
 
