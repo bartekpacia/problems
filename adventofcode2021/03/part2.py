@@ -48,20 +48,14 @@ def least_common_bit_in_pos(pos: int, items: list[str]) -> int | None:
 
 
 def calc_rating_1(nums: list[str], pos: int = 0) -> str:
-    print(f"::: {pos:}, {len(nums)=}")
     if len(nums) == 1:
         return nums[0]
     else:
         mcb = most_common_bit_in_pos(pos, nums)
-        print(f"returned mcb is {mcb}")
         if mcb == None:
             mcb = 1
 
-        print(f"mcb for {pos=} is {mcb}")
-
         nums = [n for n in nums if n[pos] == str(mcb)]
-        for num in nums:
-            print(num)
 
         pos += 1
         return calc_rating_1(nums, pos)
@@ -83,8 +77,6 @@ def calc_rating_2(nums: list[str], pos: int = 0) -> str:
 
 generator_rating = calc_rating_1(nums_str)
 scrubber_rating = calc_rating_2(nums_str)
-print(f"{generator_rating=}")
-print(f"{scrubber_rating=}")
 
 print(int(generator_rating, 2) * int(scrubber_rating, 2))
 
