@@ -55,7 +55,6 @@ def find_winning_board(
         for i in range(len(boards)):
             boards[i] = [[n if n != num else -1 for n in row] for row in boards[i]]
             if is_winning(boards[i]):
-                print(f"board {i} wins with num {num}")
                 return (boards[i], num)
 
     return None
