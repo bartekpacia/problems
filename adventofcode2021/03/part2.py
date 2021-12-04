@@ -47,6 +47,10 @@ def least_common_bit_in_pos(pos: int) -> int | None:
         return None
 
 
+# The problem is Step 3: Repeat the process! Don't take remove numbers into
+# account
+
+
 def calc_rating(least_common: bool = False) -> int | None:
     filtered_nums: set[str] = set(nums_str)
     for pos in range(12):
@@ -64,7 +68,7 @@ def calc_rating(least_common: bool = False) -> int | None:
 
         common_bit = str(common_bit)
 
-        for num in nums_str:
+        for num in filtered_nums.copy():
             bit = num[pos]
             if bit != common_bit:
                 if num in filtered_nums:
