@@ -3,7 +3,7 @@ from math import sqrt
 # list of vectors
 vectors: list[tuple[tuple[int, int], tuple[int, int]]] = []
 
-with open("sample.txt") as file:
+with open("input.txt") as file:
     for line in file:
         seg = line.strip().split("->")
         x1, y1 = tuple(map(lambda x: int(x), seg[0].strip().split(",")))
@@ -32,7 +32,6 @@ def find_line_points(
     x2, y2 = point2
     if x1 == x2:
         # vertical line
-        print(f"vertical dist: {d}")
         if y1 < y2:
             while y1 <= y2:
                 points.append((x1, y1))
@@ -42,6 +41,7 @@ def find_line_points(
                 points.append((x1, y1))
                 y1 -= 1
     elif y1 == y2:
+        # horizontal line
         if x1 < x2:
             while x1 <= x2:
                 points.append((x1, y1))
@@ -51,10 +51,19 @@ def find_line_points(
                 points.append((x1, y1))
                 x1 -= 1
 
-        # horizontal line
-        print(f"horizontal dist: {d}")
-
     return points
+
+
+matrix: list[list[int]] = []
+for i in range(1000):
+    matrix.append([])
+    for j in range(1000):
+        matrix[i].append(0)
+
+for i in range(len(matrix)):
+    for j in range(len(matrix[i])):
+        print(matrix[i][j], end="")
+    print()
 
 
 for point1, point2 in vectors:
@@ -62,5 +71,17 @@ for point1, point2 in vectors:
     points = find_line_points(point1, point2)
 
     if points:
-        for point in points:
-            print(point)
+        for x, y in points:
+            matrix[x][y] += 1
+
+print("---")
+
+overlap_point_count = 0
+for i in range(len(matrix)):
+    for j in range(len(matrix[i])):
+        if matrix[j][i] > 1:
+            overlap_point_count += 1
+        print(matrix[j][i], end="")
+    print()
+
+print(overlap_point_count)
