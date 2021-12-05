@@ -60,11 +60,6 @@ for i in range(1000):
     for j in range(1000):
         matrix[i].append(0)
 
-for i in range(len(matrix)):
-    for j in range(len(matrix[i])):
-        print(matrix[i][j], end="")
-    print()
-
 
 for point1, point2 in vectors:
     d = dist(point1, point2)
@@ -74,14 +69,10 @@ for point1, point2 in vectors:
         for x, y in points:
             matrix[x][y] += 1
 
-print("---")
-
 overlap_point_count = 0
 for i in range(len(matrix)):
     for j in range(len(matrix[i])):
         if matrix[j][i] > 1:
             overlap_point_count += 1
-        print(matrix[j][i], end="")
-    print()
 
 print(overlap_point_count)
