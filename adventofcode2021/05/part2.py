@@ -1,5 +1,3 @@
-from math import sqrt
-
 # list of vectors
 vectors: list[tuple[tuple[int, int], tuple[int, int]]] = []
 
@@ -11,12 +9,6 @@ with open("input.txt") as file:
 
         v = ((x1, y1), (x2, y2))
         vectors.append(v)
-
-
-def dist(point1: tuple[int, int], point2: tuple[int, int]) -> int:
-    # sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2
-    val = (point2[0] - point1[0]) ** 2 + (point2[1] - point1[1]) ** 2
-    return int(sqrt(val))  # will always be int in part 1
 
 
 def find_line_points(
@@ -70,7 +62,6 @@ def find_line_points(
             points.append((x1, y1))
             x1 -= 1
             y1 += 1
-        
 
     return points
 
@@ -83,7 +74,6 @@ for i in range(1000):
 
 
 for point1, point2 in vectors:
-    d = dist(point1, point2)
     points = find_line_points(point1, point2)
 
     if points:
