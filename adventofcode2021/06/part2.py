@@ -5,12 +5,6 @@ fish_ages: dict[int, int] = {}
 for i in range(9):
     fish_ages[i] = 0
 
-
-def print_ages():
-    for i in range(8, -1, -1):
-        print(f"{i}: {fish_ages[i]}")
-
-
 with open("input.txt") as file:
     ages = list(map(lambda x: int(x), file.readline().split(",")))
 
@@ -23,9 +17,6 @@ with open("input.txt") as file:
 days = 256
 fish_with_age_0_from_last_day = 0
 for d in range(days):
-    print(f"day {d} ---")
-    print_ages()
-
     fish_ages[0] = fish_ages[1]
     fish_ages[1] = fish_ages[2]
     fish_ages[2] = fish_ages[3]
