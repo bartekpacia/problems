@@ -1,35 +1,25 @@
-acc = 0
-lines: list[str] = []
-executed = set()
+with open("input.txt") as file:
+    lines = [line.strip() for line in file.readlines()]
 
-def parse(current):
-  print(f"parse({current=})")
-  global acc
-
-  if current in executed:
-    print(f"INFINITE LOOP! execution suspended, {acc=}")
-    return
-
-  executed.add(current)
-
-  line = lines[current].split()
-  cmd = line[0]
-  num = int(line[1])
-  print(f"parse({current})")
-  if cmd == "nop":
-    parse(current + 1)
-  elif cmd == "acc":
-    acc += num
-    parse(current + 1)
-  elif cmd == "jmp":
-    parse(current + num)
+executed: set[int] = set()
 
 
-def main():
-  global lines
-  with open("input.txt", "r") as f:
-    lines = [line.strip() for line in f.readlines()]
+def parse(current: int, acc: int) -> int:
+    if current in executed:
+        return acc
 
-  parse(0)
+    executed.add(current)
 
-main()
+    line = lines[current].split()
+    cmd = line[0]
+    num = int(line[1])
+    if cmd == "nop":
+        return parse(current + 1, acc)
+    elif cmd == "acc":
+        acc += num
+        return parse(current + 1, acc)
+    else:  # cmd == "jmp"
+        return parse(current + num, acc)
+
+
+print(parse(0, 0))
