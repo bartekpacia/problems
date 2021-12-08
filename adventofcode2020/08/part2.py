@@ -2,9 +2,9 @@ lines: list[str] = []
 
 
 def parse_instruction(line: str) -> tuple[str, int]:
-    line = line.split()
-    cmd = line[0]
-    num = int(line[1])
+    s = line.split()
+    cmd = s[0]
+    num = int(s[1])
 
     return cmd, num
 
@@ -29,7 +29,7 @@ def parse(acc: int, executed: set[int], prev: int, current: int) -> int | None:
         res = parse(acc, executed, current, current + 1)
     elif cmd == "acc":
         res = parse(acc + num, executed, current, current + 1)
-    elif cmd == "jmp":
+    else:  # cmd == "jmp"
         res = parse(acc, executed, current, current + num)
 
     return res
