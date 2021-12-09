@@ -44,7 +44,7 @@ basin_index = 0
 for basin in basins:
     if not basin:
         continue
-    print(f"BASIN {basin_index}")
+    print(f"--BASIN {basin_index}--")
     basin_index += 1
     for i in range(len(heightmap)):
         for j in range(len(heightmap[i])):
@@ -54,13 +54,3 @@ for basin in basins:
                 print(" ", end="")
 
         print(" ")
-
-
-# # just print
-# for i in range(len(heightmap)):
-#     for j in range(len(heightmap[i])):
-#         if (i, j) in visited:
-#             print(heightmap[i][j], end="")
-#         else:
-#             print(" ", end="")
-#     print("")
