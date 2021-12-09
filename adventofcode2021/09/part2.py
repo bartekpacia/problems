@@ -1,6 +1,3 @@
-visited: set[tuple[int, int]] = set()
-basins: list[set[tuple[int, int]]] = []
-
 with open("input.txt") as file:
     heightmap = [[int(num) for num in row.strip()] for row in file.readlines()]
 
@@ -31,29 +28,34 @@ def is_low_point(i: int, j: int) -> bool:
     return True
 
 
-def explore(i: int, j: int) -> set[tuple[int, int]]:
+def explore(
+    i: int,
+    j: int,
+    visited: set[tuple[int, int]],
+) -> set[tuple[int, int]]:
     if heightmap[i][j] == 9:
         return set()
-
-    new_visited: set[tuple[int, int]] = set()
 
     point = (i, j)
     if point not in visited:
         visited.add(point)
-        new_visited.add(point)
     else:
         return set()
 
-    if j - 1 >= 0:  # left
-        new_visited.update(explore(i, j - 1))
-    if i - 1 >= 0:  # top
-        new_visited.update(explore(i - 1, j))
-    if j + 1 < len(heightmap[i]):  # right
-        new_visited.update(explore(i, j + 1))
-    if i + 1 < len(heightmap):  # bottom
-        new_visited.update(explore(i + 1, j))
+    if j - 1 >= 0:
+        # left
+        visited.update(explore(i, j - 1, visited))
+    if i - 1 >= 0:
+        # top
+        visited.update(explore(i - 1, j, visited))
+    if j + 1 < len(heightmap[i]):
+        # right
+        visited.update(explore(i, j + 1, visited))
+    if i + 1 < len(heightmap):
+        # bottom
+        visited.update(explore(i + 1, j, visited))
 
-    return new_visited
+    return visited
 
 
 low_points: list[tuple[int, int]] = []
@@ -63,12 +65,10 @@ for i in range(len(heightmap)):
         if is_low_point(i, j):
             low_points.append((i, j))
 
+basins: list[set[tuple[int, int]]] = []
 for i, j in low_points:
-    if (i, j) not in visited:
-        basin = explore(i, j)
-        basins.append(basin)
-    else:
-        continue
+    basin = explore(i, j, set())
+    basins.append(basin)
 
 
 max_lens = [len(basin) for basin in basins]
