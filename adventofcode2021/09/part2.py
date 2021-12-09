@@ -27,13 +27,9 @@ def explore(i: int, j: int):
         explore(i + 1, j)
 
 
-ii = 4
-jj = 1
-explore(ii, jj)
-print(f"EXPLORATION END, start point ({ii}, {jj})")
-print(f"explored basin: {basin}")
-print(f"visited: {visited}")
-
+for i in range(len(heightmap)):
+    for j in range(len(heightmap[i])):
+        explore(i, j)
 
 # just print
 for i in range(len(heightmap)):
