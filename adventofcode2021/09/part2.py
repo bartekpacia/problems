@@ -1,7 +1,7 @@
 visited: set[tuple[int, int]] = set()
 basins: list[set[tuple[int, int]]] = []
 
-with open("sample.txt") as file:
+with open("sample2.txt") as file:
     heightmap = [[int(num) for num in row.strip()] for row in file.readlines()]
 
 
@@ -40,10 +40,14 @@ for i in range(len(heightmap)):
             continue
 
 
-top_1 = None
-top_2 = None
-top_3 = None
-for i, basin in enumerate(basins):
+top_1 = len(basins[0])
+top_2 = len(basins[1])
+top_3 = len(basins[2])
+for i in range(len(basins)):
+    basin = basins[i]
+    if not basin:
+        continue
+
     size = len(basin)
 
     if not top_1:
@@ -59,10 +63,6 @@ for i, basin in enumerate(basins):
     elif size > top_3:
         top_3 = size
 
-
-print(f"ANSWER: {top_1 * top_2 * top_3}")
-
-
 basin_index = 0
 for basin in basins:
     if not basin:
@@ -77,3 +77,6 @@ for basin in basins:
                 print(" ", end="")
 
         print(" ")
+
+print(f"{top_1=}, {top_2=}, {top_3=}")
+print(f"ANSWER: {top_1 * top_2 * top_3}")
