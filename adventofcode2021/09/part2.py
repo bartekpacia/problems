@@ -1,12 +1,37 @@
 visited: set[tuple[int, int]] = set()
 basins: list[set[tuple[int, int]]] = []
 
-with open("sample2.txt") as file:
+with open("input.txt") as file:
     heightmap = [[int(num) for num in row.strip()] for row in file.readlines()]
 
 
+def is_low_point(i: int, j: int) -> bool:
+    point = heightmap[i][j]
+    adjacent_points: list[int] = []
+    if j - 1 >= 0:
+        left = heightmap[i][j - 1]
+        adjacent_points.append(left)
+
+    if i - 1 >= 0:
+        top = heightmap[i - 1][j]
+        adjacent_points.append(top)
+
+    if j + 1 < len(heightmap[i]):
+        right = heightmap[i][j + 1]
+        adjacent_points.append(right)
+
+    if i + 1 < len(heightmap):
+        bottom = heightmap[i + 1][j]
+        adjacent_points.append(bottom)
+
+    for adj_point in adjacent_points:
+        if not point < adj_point:
+            return False
+
+    return True
+
+
 def explore(i: int, j: int) -> set[tuple[int, int]]:
-    print(f"explore {i=} {j=}")
     if heightmap[i][j] == 9:
         return set()
 
@@ -31,52 +56,21 @@ def explore(i: int, j: int) -> set[tuple[int, int]]:
     return new_visited
 
 
+low_points: list[tuple[int, int]] = []
 for i in range(len(heightmap)):
     for j in range(len(heightmap[i])):
-        if (i, j) not in visited:
-            basin = explore(i, j)
-            basins.append(basin)
-        else:
-            continue
+        point = heightmap[i][j]
+        if is_low_point(i, j):
+            low_points.append((i, j))
 
-
-top_1 = len(basins[0])
-top_2 = len(basins[1])
-top_3 = len(basins[2])
-for i in range(len(basins)):
-    basin = basins[i]
-    if not basin:
+for i, j in low_points:
+    if (i, j) not in visited:
+        basin = explore(i, j)
+        basins.append(basin)
+    else:
         continue
 
-    size = len(basin)
 
-    if not top_1:
-        top_1 = size
-    elif not top_2:
-        top_2 = size
-    elif not top_3:
-        top_3 = size
-    elif size > top_1:
-        top_1 = size
-    elif size > top_2:
-        top_2 = size
-    elif size > top_3:
-        top_3 = size
-
-basin_index = 0
-for basin in basins:
-    if not basin:
-        continue
-    print(f"--BASIN {basin_index}--")
-    basin_index += 1
-    for i in range(len(heightmap)):
-        for j in range(len(heightmap[i])):
-            if (i, j) in basin:
-                print(heightmap[i][j], end="")
-            else:
-                print(" ", end="")
-
-        print(" ")
-
-print(f"{top_1=}, {top_2=}, {top_3=}")
-print(f"ANSWER: {top_1 * top_2 * top_3}")
+max_lens = [len(basin) for basin in basins]
+max_lens.sort(reverse=True)
+print(max_lens[0] * max_lens[1] * max_lens[2])
