@@ -40,6 +40,29 @@ for i in range(len(heightmap)):
             continue
 
 
+top_1 = None
+top_2 = None
+top_3 = None
+for i, basin in enumerate(basins):
+    size = len(basin)
+
+    if not top_1:
+        top_1 = size
+    elif not top_2:
+        top_2 = size
+    elif not top_3:
+        top_3 = size
+    elif size > top_1:
+        top_1 = size
+    elif size > top_2:
+        top_2 = size
+    elif size > top_3:
+        top_3 = size
+
+
+print(f"ANSWER: {top_1 * top_2 * top_3}")
+
+
 basin_index = 0
 for basin in basins:
     if not basin:
