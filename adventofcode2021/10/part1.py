@@ -21,8 +21,6 @@ illegals = {k: 0 for k, _ in close_matches.items()}
 
 
 for i, line in enumerate(lines):
-    print(f"---------line {i+1}---------")
-
     stack: list[str] = []
     for char in line:
         if char in open_matches.keys():
@@ -31,14 +29,12 @@ for i, line in enumerate(lines):
         else:
             # closing brace
             if char == open_matches[stack[-1]]:
-                print(f"opened brace {stack[-1]} closed with {char}")
                 stack.pop()
             else:
-                print(f"Expected {open_matches[stack[-1]]}, but found {char} instead")
                 illegals[char] += 1
                 break
 score = 0
-for k, v in illegals.items():
-    score += scores[k] * v
+for char, occurences in illegals.items():
+    score += scores[char] * occurences
 
 print(score)
