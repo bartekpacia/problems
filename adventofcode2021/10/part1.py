@@ -15,12 +15,10 @@ scores: dict[str, int] = {
     ">": 25137,
 }
 
-close_matches = {v: k for k, v in open_matches.items()}
-
-illegals = {k: 0 for k, _ in close_matches.items()}
+illegals = {v: 0 for v in open_matches.values()}
 
 
-for i, line in enumerate(lines):
+for line in lines:
     stack: list[str] = []
     for char in line:
         if char in open_matches.keys():
