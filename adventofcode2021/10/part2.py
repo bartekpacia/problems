@@ -8,8 +8,6 @@ open_matches: dict[str, str] = {
     "<": ">",
 }
 
-close_matches = {v: k for k, v in open_matches.items()}
-
 scores: dict[str, int] = {
     ")": 1,
     "]": 2,
@@ -35,7 +33,7 @@ def is_corrupted_line(line: str) -> bool:
 
 
 line_scores: list[int] = []
-for i, line in enumerate(lines):
+for line in lines:
     if is_corrupted_line(line):
         continue
 
@@ -65,8 +63,6 @@ for i, line in enumerate(lines):
         score *= 5
         score += scores[char]
 
-    fix = "".join(appended)
-    print(f"{line} - Complete by adding {fix}, score {score}")
     line_scores.append(score)
 
 line_scores.sort()
