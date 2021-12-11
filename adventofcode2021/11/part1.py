@@ -5,14 +5,6 @@ with open("input.txt") as f:
         matrix.append(row)
 
 
-def print_matrix():
-    for i in range(len(matrix)):
-        for j in range(len(matrix[i])):
-            print(matrix[i][j], end="")
-
-        print()
-
-
 def do_step():
     for i in range(len(matrix)):
         for j in range(len(matrix[i])):
@@ -36,7 +28,6 @@ def flash(i: int, j: int):
     Increases the energy of all elements adjacent to [i][j] (there are max 8 of
     them) by 1.
     """
-    print(f"flashing ({i},{j})")
     global flash_count
     flash_count += 1
     already_flashed.add((i, j))
@@ -89,13 +80,8 @@ def flash(i: int, j: int):
             flash(i + 1, j - 1)
 
 
-print("--- before any steps ---")
-print_matrix()
-
 for i in range(100):
     already_flashed.clear()
     do_step()
-    print(f"--- after step {i + 1} ---")
-    print_matrix()
 
 print(flash_count)
