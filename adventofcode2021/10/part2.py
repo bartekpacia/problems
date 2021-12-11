@@ -1,4 +1,4 @@
-with open("sample.txt") as f:
+with open("input.txt") as f:
     lines = [line.strip() for line in f]
 
 open_matches: dict[str, str] = {
@@ -34,8 +34,7 @@ def is_corrupted_line(line: str) -> bool:
     return False
 
 
-score = 0
-corrupted_line_count = 0
+line_scores: list[int] = []
 for i, line in enumerate(lines):
     if is_corrupted_line(line):
         continue
@@ -61,8 +60,14 @@ for i, line in enumerate(lines):
 
         j += 1
 
+    score = 0
+    for char in appended:
+        score *= 5
+        score += scores[char]
+
     fix = "".join(appended)
-    print(f"{line} - Complete by adding {fix}")
+    print(f"{line} - Complete by adding {fix}, score {score}")
+    line_scores.append(score)
 
-
-# print(corrupted_line_count)
+line_scores.sort()
+print(line_scores[(len(line_scores) - 1) // 2])
