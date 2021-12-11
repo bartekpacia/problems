@@ -11,7 +11,7 @@ open_matches: dict[str, str] = {
 close_matches = {v: k for k, v in open_matches.items()}
 
 
-for line in lines:
+for i, line in enumerate(lines):
     # ignore incomplete lines
     if len(line) % 2 != 0:
         continue
