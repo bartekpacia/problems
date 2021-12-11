@@ -1,5 +1,5 @@
 matrix: list[list[int]] = []
-with open("sample.txt") as f:
+with open("input.txt") as f:
     for line in f:
         row = [int(char) for char in line.strip()]
         matrix.append(row)
@@ -92,7 +92,7 @@ def flash(i: int, j: int):
 print("--- before any steps ---")
 print_matrix()
 
-for i in range(10):
+for i in range(100):
     already_flashed.clear()
     do_step()
     print(f"--- after step {i + 1} ---")
