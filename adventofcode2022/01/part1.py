@@ -8,9 +8,8 @@ with open("input.txt") as file:
                 max_calories = current_calories
             current_calories = 0
             continue
-            
+
         calories = int(line)
         current_calories += calories
 
 print(max_calories)
-
