@@ -8,9 +8,9 @@ defs = {
     scissors: 3,  # scissors
 }
 
-lose = 'X'
-draw = 'Y'
-win = 'Z'
+lose = "X"
+draw = "Y"
+win = "Z"
 
 
 def clash(enemy_shape: str, wanted_outcome: str) -> int:
