@@ -1,39 +1,29 @@
 def overlaps(a: range, b: range) -> bool:
-    
+    starts_earlier = "both"
 
-with open("sample.txt") as file:
-    common: list[str] = []
+    if a.start < b.start:
+        starts_earlier = "a"
+    elif b.start < a.start:
+        starts_earlier = "b"
 
+    if a.stop >= b.stop and (starts_earlier == "a" or starts_earlier == "both"):
+        # `a` overlaps whole `b`
+        return True
+    if b.stop >= a.stop and (starts_earlier == "b" or starts_earlier == "both"):
+        # `b` overlaps whole `a`
+        return True
+
+    return False
+
+
+overlapping_pairs = 0
+with open("input.txt") as file:
     for l in file:
         line = l.strip().split(",")
-        first_section = list(map(lambda x: int(x), line[0].split("-")))
-        second_section = list(map(lambda x: int(x), line[1].split("-")))
+        start1, end1 = list(map(lambda x: int(x), line[0].split("-")))
+        start2, end2 = list(map(lambda x: int(x), line[1].split("-")))
 
-        if first_section[0] < second_section[0]:
-            section_start = 'first'
-            begin = first_section[0]
-        elif second_section[0] < first_section[0]:
-            section_start = 'second'
-            begin = second_section[0]
-        else: # equal start
-            begin = first_section[0]
-            section_start = 'both'
+        if overlaps(range(start1, end1 + 1), range(start2, end2 + 1)):
+            overlapping_pairs += 1
 
-        if first_section[1] > second_section[1]:
-            section_end = 'first'
-            end = first_section[1]
-        elif second_section[1] > first_section[1]:
-            section_end = 'second'
-            end = second_section[1]
-        else: # equal end
-            begin = first_section[1]
-            section_end = 'both'
-
-        if (
-            (section_start == section_end) or
-            (section_start == 'both' and second)
-            ):
-            print(f'fully contained: {line}')
-
-
-        # print(f"{first_section=}, {second_section=}")
+print(overlapping_pairs)
