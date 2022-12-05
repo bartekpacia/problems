@@ -12,20 +12,21 @@ with open("sample.txt") as file:
     stacks: list[list[str]] = []
     for i, char in enumerate(matrix[-1]):
         if char.isnumeric():
-            print(f'numeric: {char}, i: {i}')
-
             stacks.append([])
             for j in range(len(matrix)-2, -1, -1):
-                print(f'j: {j}, i: {i}', end=' ')
-                print(f'char: {matrix[j][i]}')
-                stacks[-1].append(matrix[j][i])
+                if matrix[j][i].isalpha():
+                    stacks[-1].append(matrix[j][i])
+            
+            stacks[-1] = stacks[-1]
     
 
+for stack in stacks:
+    print(stack)
 
-for i, _ in enumerate(matrix):
-    for j, _ in enumerate(matrix[i]):
-        print(matrix[i][j], end='')
-    print('')
+# for i, _ in enumerate(matrix):
+#     for j, _ in enumerate(matrix[i]):
+#         print(matrix[i][j], end='')
+#     print('')
 
 #for row in containers_layout:
 #    print(row)
