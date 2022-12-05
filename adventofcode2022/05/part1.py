@@ -64,6 +64,7 @@ def rearrange(stacks: list[list[str]], instructions: list[tuple[int, int, int]])
                 stacks[int(char)][0] = char
                 break
 
+
 result = ""
 for stack in stacks:
     result += stack[-1]

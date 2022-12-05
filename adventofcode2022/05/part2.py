@@ -43,23 +43,13 @@ with open("input.txt") as file:
                     stacks[-1].append(matrix[j][i])
 
 
-
-xd = 0
 def move(count: int, src: int, dst: int):
     to_move = stacks[src][-count:][:]
 
-    print('---')
     for _ in range(count):
-        print(f'popping {stacks[src][-1]} from {src} and appending to {dst}')
         stacks[src].pop()
 
     stacks[dst].extend(to_move)
-
-    global xd
-    print(f'stacks after move {xd}')
-    for stack in stacks:
-        print(stack)
-    xd += 1
 
 
 for instr in instructions:
@@ -77,6 +67,7 @@ def rearrange(stacks: list[list[str]], instructions: list[tuple[int, int, int]])
                 stacks[i][j] = stacks[int(char)][0]
                 stacks[int(char)][0] = char
                 break
+
 
 result = ""
 for stack in stacks:
