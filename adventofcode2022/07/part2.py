@@ -23,7 +23,6 @@ class DirNode(Node):
         self.parent = parent
 
     def add_node(self, node: "Node"):
-        print(f'adding new node "{node.name}" to current node "{self.name}"')
         self.nodes.append(node)
 
     def get_size(self):
@@ -44,7 +43,6 @@ class DirNode(Node):
         for node in self.nodes:
             output.append("  " * (level + 1) + str(node))
             if isinstance(node, DirNode):
-                print(f"node {node.name} is a DirNode, recursing")
                 output.append(node.tree(level=level + 1))
 
         return "\n".join(output)
@@ -84,9 +82,6 @@ with open("input.txt") as file:
         if line.startswith("$"):
             # command parsing mode
             cmd, *args = line.split()[1:]
-
-            print(f"found command {cmd}")
-
             if cmd == "ls":
                 reading_output = True
             elif cmd == "cd":
@@ -95,7 +90,6 @@ with open("input.txt") as file:
                 if arg == "..":
                     current_node = current_node.parent
                 else:
-                    print(f'set current directory to "{arg}"')
                     new_node = current_node.subdir(name=arg)
                     current_node = new_node
 
@@ -111,21 +105,19 @@ with open("input.txt") as file:
             else:
                 raise RuntimeError("invalid state")
 
-
-print(root.tree())
-
 available_space = 70_000_000 - root.get_size()
 
 min_enough_size = 70_000_000
+
+
 def find_node_to_delete(node: DirNode):
     size = node.get_size()
     if available_space + size >= 30_000_000:
-        print(f'found enough space in {node.name} ({size}')
         global min_enough_size
         if size < min_enough_size:
             min_enough_size = size
 
+
 root.walk(find_node_to_delete)
 
-print(f'available space: {available_space}')
-print(f'min enough size: {min_enough_size}')
+print(min_enough_size)
