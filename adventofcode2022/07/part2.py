@@ -114,16 +114,18 @@ with open("input.txt") as file:
 
 print(root.tree())
 
-total_size = 0
-def count_size(node: DirNode):
+available_space = 70_000_000 - root.get_size()
+
+min_enough_size = 70_000_000
+def find_node_to_delete(node: DirNode):
     size = node.get_size()
-    if size > 100000:
-        return
-    else:
-        global total_size
-        print(f'adding size of dir \"{node.name}\": {size}')
-        total_size += size
+    if available_space + size >= 30_000_000:
+        print(f'found enough space in {node.name} ({size}')
+        global min_enough_size
+        if size < min_enough_size:
+            min_enough_size = size
 
+root.walk(find_node_to_delete)
 
-root.walk(count_size)
-print(f'total size: {total_size}')
+print(f'available space: {available_space}')
+print(f'min enough size: {min_enough_size}')
