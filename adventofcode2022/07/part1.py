@@ -1,4 +1,5 @@
 import abc
+from typing import Callable
 
 
 class Node:
@@ -30,7 +31,7 @@ class DirNode(Node):
 
     def subdir(self, name: str) -> "DirNode":
         for node in self.nodes:
-            if node.name == name and type(node) == DirNode:
+            if node.name == name and isinstance(node, DirNode):
                 return node
 
         raise RuntimeError(f"subdir {name} not found")
@@ -43,10 +44,18 @@ class DirNode(Node):
         for node in self.nodes:
             output.append("  " * (level + 1) + str(node))
             if isinstance(node, DirNode):
-                print(f'node {node.name} is a DirNode, recursing')
+                print(f"node {node.name} is a DirNode, recursing")
                 output.append(node.tree(level=level + 1))
 
         return "\n".join(output)
+
+    def walk(self, func: Callable[["DirNode"], None]):
+        for node in self.nodes:
+            if not isinstance(node, DirNode):
+                continue
+
+            func(node)
+            node.walk(func)
 
 
 class FileNode(Node):
@@ -66,7 +75,7 @@ current_node = root
 
 reading_output = False
 
-with open("sample.txt") as file:
+with open("input.txt") as file:
     lines = file.readlines()[1:]  # first line is always "$ cd /"
 
     for l in lines:
@@ -104,3 +113,18 @@ with open("sample.txt") as file:
 
 
 print(root.tree())
+
+total_size = 0
+
+def count_size(node: DirNode):
+    size = node.get_size()
+    if size > 100000:
+        return
+    else:
+        global total_size
+        print(f'adding size of dir \"{node.name}\": {size}')
+        total_size += size
+
+
+root.walk(count_size)
+print(f'total size: {total_size}')
