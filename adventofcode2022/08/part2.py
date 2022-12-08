@@ -27,7 +27,7 @@ def scenic_score(start_i: int, start_j: int) -> int:
     j = start_j + 1
     while start_j != len(trees[0]) - 1 and j <= len(trees[0]) - 1:
         right_trees += 1
-        if trees[start_i][j] < trees[start_i][j - 1]:
+        if trees[start_i][j] < trees[start_i][start_j]:
             j += 1
         else:
             break
@@ -37,7 +37,7 @@ def scenic_score(start_i: int, start_j: int) -> int:
     i = start_i + 1
     while start_i != len(trees) - 1 and i <= len(trees) - 1:
         bottom_trees += 1
-        if trees[i][start_j] < trees[i - 1][start_j]:  # tree is shorter
+        if trees[i][start_j] < trees[start_i][start_j]:  # tree is shorter
             i += 1
         else:
             break
