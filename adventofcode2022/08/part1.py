@@ -72,8 +72,8 @@ for i in range(len(trees)):
 
 # look from top
 for j in range(len(trees[0])):
-    current_tallest_tree = trees[j][0]
-    for i in range(len(trees)):
+    current_tallest_tree = trees[0][j]
+    for i in range(1, len(trees)):
         # print(f'top: checking ({i}, {j})')
         # print(f'checking tree at ({i}, {j})')
 
