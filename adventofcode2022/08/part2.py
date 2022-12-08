@@ -1,6 +1,6 @@
 trees: list[list[int]] = []
 
-with open("sample.txt") as f:
+with open("input.txt") as f:
     for l in f:
         line = l.strip()
         if line:
@@ -17,7 +17,7 @@ def scenic_score(start_i: int, start_j: int) -> int:
     while start_j != 0 and j >= 0:
         # print(f'looking left from {start_i} {start_j} at ({start_i}, {j}) with height {trees[start_i][j]}')
         left_trees += 1
-        if trees[start_i][j] < trees[start_i][j + 1]:
+        if trees[start_i][j] < trees[start_i][start_j]:
             j -= 1
         else:
             break
@@ -47,25 +47,18 @@ def scenic_score(start_i: int, start_j: int) -> int:
     i = start_i - 1
     while i != 0 and i >= 0:
         up_trees += 1
-        if trees[i][start_j] < trees[i + 1][start_j]:
+        if trees[i][start_j] < trees[start_i][start_j]:
             i -= 1
         else:
             break
 
-    result = up_trees * left_trees * bottom_trees * right_trees
-    print(
-        f"up: {up_trees} left: {left_trees} bottom: {bottom_trees} right: {right_trees} = {result}"
-    )
-    return result
+    return up_trees * left_trees * bottom_trees * right_trees
 
 
 for i in range(len(trees)):
-    print(f"ROW {i}")
     for j in range(len(trees[0])):
-        print(f"{trees[i][j]}    ", end="")
         score = scenic_score(i, j)
         if score > largest_scenic_score:
             largest_scenic_score = score
-    print()
 
-print(f"Largest scenic score: {largest_scenic_score}")
+print(largest_scenic_score)

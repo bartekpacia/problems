@@ -33,18 +33,10 @@ bordering_trees = visible_trees.copy()
 for i in range(len(trees)):
     current_tallest_tree = trees[i][0]
     for j in range(1, len(trees[i])):
-        # print(f'checking tree at ({i}, {j})')
-
         if trees[i][j] <= current_tallest_tree:
-            # print(f'tree at ({i}, {j}) with height {trees[i][j]} is not taller that {current_tallest_tree}')
-
             if trees[i][j] > current_tallest_tree:
                 current_tallest_tree = trees[i][j]
             continue
-
-        if (i, j) not in visible_trees:
-            # print(f'tree at ({i}, {j}) with height {trees[i][j]} is visible from left')
-            pass
 
         visible_trees.add((i, j))
         if trees[i][j] > current_tallest_tree:
@@ -54,17 +46,10 @@ for i in range(len(trees)):
 for i in range(len(trees)):
     current_tallest_tree = trees[i][len(trees[0]) - 1]
     for j in range(len(trees[i]) - 1, -1, -1):
-
         if trees[i][j] <= current_tallest_tree:
-            # print(f'tree at ({i}, {j}) with height {trees[i][j]} is not taller that {current_tallest_tree}')
-
             if trees[i][j] > current_tallest_tree:
                 current_tallest_tree = trees[i][j]
             continue
-
-        if (i, j) not in visible_trees:
-            # print(f'tree at ({i}, {j}) with height {trees[i][j]} is visible from left')
-            pass
 
         visible_trees.add((i, j))
         if trees[i][j] > current_tallest_tree:
@@ -74,19 +59,10 @@ for i in range(len(trees)):
 for j in range(len(trees[0])):
     current_tallest_tree = trees[0][j]
     for i in range(1, len(trees)):
-        # print(f'top: checking ({i}, {j})')
-        # print(f'checking tree at ({i}, {j})')
-
         if trees[i][j] <= current_tallest_tree:
-            # print(f'tree at ({i}, {j}) with height {trees[i][j]} is not taller that {current_tallest_tree}')
-
             if trees[i][j] > current_tallest_tree:
                 current_tallest_tree = trees[i][j]
             continue
-
-        if (i, j) not in visible_trees:
-            # print(f'tree at ({i}, {j}) with height {trees[i][j]} is visible from left')
-            pass
 
         visible_trees.add((i, j))
         if trees[i][j] > current_tallest_tree:
@@ -96,29 +72,15 @@ for j in range(len(trees[0])):
 for j in range(len(trees[0])):
     current_tallest_tree = trees[len(trees) - 1][j]
     for i in range(len(trees) - 1, -1, -1):
-        # print(f'bottom: checking ({i}, {j})')
-        # print(f'checking tree at ({i}, {j})')
 
         if trees[i][j] <= current_tallest_tree:
-            # print(f'tree at ({i}, {j}) with height {trees[i][j]} is not taller that {current_tallest_tree}')
-
             if trees[i][j] > current_tallest_tree:
                 current_tallest_tree = trees[i][j]
             continue
-
-        if (i, j) not in visible_trees:
-            # print(f'tree at ({i}, {j}) with height {trees[i][j]} is visible from left')
-            pass
 
         visible_trees.add((i, j))
         if trees[i][j] > current_tallest_tree:
             current_tallest_tree = trees[i][j]
 
 
-interior_trees = visible_trees - bordering_trees
-for tree in interior_trees:
-    print(f"interior tree at {tree} with height {trees[tree[0]][tree[1]]}")
-
-print(f"bordering trees: {len(bordering_trees)}")
-print(f"interior trees: {len(interior_trees)}")
 print(len(visible_trees))
