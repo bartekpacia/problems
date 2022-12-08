@@ -94,7 +94,7 @@ for j in range(len(trees[0])):
 
 # look from bottom
 for j in range(len(trees[0])):
-    current_tallest_tree = trees[len(trees)-1][j]
+    current_tallest_tree = trees[len(trees) - 1][j]
     for i in range(len(trees) - 1, -1, -1):
         # print(f'bottom: checking ({i}, {j})')
         # print(f'checking tree at ({i}, {j})')
@@ -119,6 +119,6 @@ interior_trees = visible_trees - bordering_trees
 for tree in interior_trees:
     print(f"interior tree at {tree} with height {trees[tree[0]][tree[1]]}")
 
-print(f'bordering trees: {len(bordering_trees)}')
-print(f'interior trees: {len(interior_trees)}')
+print(f"bordering trees: {len(bordering_trees)}")
+print(f"interior trees: {len(interior_trees)}")
 print(len(visible_trees))
