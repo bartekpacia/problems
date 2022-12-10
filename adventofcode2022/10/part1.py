@@ -8,9 +8,6 @@ def on_cycle_end(cycle: int):
     global signal_strength_sum
     if (cycle + 20) % 40 == 0:
         signal_strength = x * cycle
-        print(
-            f"During the {cycle}th cycle, register X has the value {x}, so the signal strength is {cycle} * {x} = {signal_strength}"
-        )
         signal_strength_sum += signal_strength
 
 
@@ -28,4 +25,5 @@ with open("input.txt") as file:
             x += int(line.split()[1])
             cycle += 1
             on_cycle_end(cycle)
+
 print(signal_strength_sum)
