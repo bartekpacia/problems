@@ -17,7 +17,7 @@ class Monkey:
 monkeys: list[Monkey] = []
 current_monkey = Monkey()
 
-with open("sample.txt") as file:
+with open("input.txt") as file:
     for l in file:
         line = l.strip()
 
@@ -52,16 +52,20 @@ with open("sample.txt") as file:
 #     print(f'    If true: throw to monkey {monkey.if_true}')
 #     print(f'    If false: throw to monkey {monkey.if_false}')
 
+inspections = {index: 0 for index in range(len(monkeys))}
+print(inspections)
 
 def run_round():
-    global monkeys
+    # global monkeys
+    # global inspections
 
     for i, monkey in enumerate(monkeys):
         print(f"Monkey {i}:")
         monkey.items = [item for item in monkey.items if item != -1]
-        for i in range(len(monkey.items)):
-            worry_level = monkey.items[i]
+        for j in range(len(monkey.items)):
+            worry_level = monkey.items[j]
             print(f"  Monkey inspects an item with a worry level of {worry_level}.")
+            inspections[i] += 1
 
             new_worry_level = -1
             if monkey.op[1] == "old":
@@ -96,12 +100,12 @@ def run_round():
                 print(f"    Current worry level is divisible by {monkey.test}.")
                 monkeys[monkey.if_true].items.append(new_worry_level)
                 print(f'    Item with worry level {new_worry_level} is thrown to monkey {monkey.if_true}.')
-                monkey.items[i] = -1  # mark as thrown
+                monkey.items[j] = -1  # mark as thrown
             else:
                 print(f"    Current worry level is not divisible by {monkey.test}.")
                 monkeys[monkey.if_false].items.append(new_worry_level)
                 print(f'    Item with worry level {new_worry_level} is thrown to monkey {monkey.if_false}.')
-                monkey.items[i] = -1  # mark as thrown
+                monkey.items[j] = -1  # mark as thrown
 
 
 # run simulation
@@ -115,3 +119,12 @@ for i in range(20):
     for i, monkey in enumerate(monkeys):
         print(f'Monkey {i}: {monkey.items}')
 
+
+for k, v in inspections.items():
+    print(f'Monkey {k} inspected items {v} times.')
+
+sorted_inspections = sorted(inspections.values(), reverse=True)
+print(sorted_inspections)
+
+monkey_business = sorted_inspections[0] * sorted_inspections[1]
+print(monkey_business)
