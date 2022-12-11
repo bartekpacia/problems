@@ -44,67 +44,35 @@ with open("input.txt") as file:
     monkeys.append(current_monkey)
 
 
-# for i, monkey in enumerate(monkeys):
-#     print(f'Monkey {i}')
-#     print(f'  Starting items: {monkey.items}')
-#     print(f'  Operation: new = old {monkey.op[0]} {monkey.op[1]}')
-#     print(f'  Test: divisible by {monkey.test}')
-#     print(f'    If true: throw to monkey {monkey.if_true}')
-#     print(f'    If false: throw to monkey {monkey.if_false}')
-
 inspections = {index: 0 for index in range(len(monkeys))}
-print(inspections)
+
 
 def run_round():
-    # global monkeys
-    # global inspections
-
     for i, monkey in enumerate(monkeys):
-        print(f"Monkey {i}:")
         monkey.items = [item for item in monkey.items if item != -1]
         for j in range(len(monkey.items)):
             worry_level = monkey.items[j]
-            print(f"  Monkey inspects an item with a worry level of {worry_level}.")
             inspections[i] += 1
 
             new_worry_level = -1
             if monkey.op[1] == "old":
                 if monkey.op[0] == "+":
                     new_worry_level = worry_level + worry_level
-                    print(
-                        f"    Worry level is increased by itself to {new_worry_level}."
-                    )
                 elif monkey.op[0] == "*":
                     new_worry_level = worry_level * worry_level
-                    print(
-                        f"    Worry level is multiplied by itself to {new_worry_level}."
-                    )
             else:
                 if monkey.op[0] == "+":
                     new_worry_level = worry_level + int(monkey.op[1])
-                    print(
-                        f"    Worry level increases by {int(monkey.op[1])} to {new_worry_level}."
-                    )
                 elif monkey.op[0] == "*":
                     new_worry_level = worry_level * int(monkey.op[1])
-                    print(
-                        f"    Worry level is multiplied by {int(monkey.op[1])} to {new_worry_level}."
-                    )
 
             new_worry_level = new_worry_level // 3
-            print(
-                f"    Monkey gets bored with item. Worry level is divided by 3 to {new_worry_level}."
-            )
 
             if new_worry_level % monkey.test == 0:
-                print(f"    Current worry level is divisible by {monkey.test}.")
                 monkeys[monkey.if_true].items.append(new_worry_level)
-                print(f'    Item with worry level {new_worry_level} is thrown to monkey {monkey.if_true}.')
                 monkey.items[j] = -1  # mark as thrown
             else:
-                print(f"    Current worry level is not divisible by {monkey.test}.")
                 monkeys[monkey.if_false].items.append(new_worry_level)
-                print(f'    Item with worry level {new_worry_level} is thrown to monkey {monkey.if_false}.')
                 monkey.items[j] = -1  # mark as thrown
 
 
@@ -115,16 +83,7 @@ for i in range(20):
     for monkey in monkeys:
         monkey.items = [item for item in monkey.items if item != -1]
 
-    print(f'--END OF ROUND {i+1}---')
-    for i, monkey in enumerate(monkeys):
-        print(f'Monkey {i}: {monkey.items}')
-
-
-for k, v in inspections.items():
-    print(f'Monkey {k} inspected items {v} times.')
 
 sorted_inspections = sorted(inspections.values(), reverse=True)
-print(sorted_inspections)
-
 monkey_business = sorted_inspections[0] * sorted_inspections[1]
 print(monkey_business)
