@@ -1,0 +1,129 @@
+from math import lcm
+
+def log(msg):
+    #print(msg)
+    pass
+
+class Monkey:
+    def __init__(
+        self,
+        items: list[int] = [],
+        op: tuple[str, str] = ("None", "None"),  # e.g (+, 2) or (*, old)
+        test: int = -1,
+        if_true: int = -1,
+        if_false: int = -1,
+    ):
+        self.items = items
+        self.op = op
+        self.test = test
+        self.if_true = if_true
+        self.if_false = if_false
+
+
+monkeys: list[Monkey] = []
+current_monkey = Monkey()
+
+with open("input.txt") as file:
+    for l in file:
+        line = l.strip()
+
+        if not line:
+            monkeys.append(current_monkey)
+            current_monkey = Monkey()
+        elif line.startswith("Monkey"):
+            pass
+        elif line.startswith("Starting items"):
+            current_monkey.items = list(
+                map(lambda x: int(x), line.replace(",", "").split()[2:])
+            )
+        elif line.startswith("Operation"):
+            op = line.split()[4]
+            arg = line.split()[5]
+            current_monkey.op = (op, arg)
+        elif line.startswith("Test"):
+            current_monkey.test = int(line.split()[3])
+        elif line.startswith("If true"):
+            current_monkey.if_true = int(line.split()[5])
+        elif line.startswith("If false"):
+            current_monkey.if_false = int(line.split()[5])
+
+    monkeys.append(current_monkey)
+
+divisor = 1
+for monkey in monkeys:
+    divisor *= monkey.test
+
+print(f'divisor: {divisor}')
+
+inspections = {index: 0 for index in range(len(monkeys))}
+log(inspections)
+
+def run_round():
+    for i, monkey in enumerate(monkeys):
+        log(f"Monkey {i}:")
+        monkey.items = [item for item in monkey.items if item != -1]
+        for j in range(len(monkey.items)):
+            worry_level = monkey.items[j]
+            log(f"  Monkey inspects an item with a worry level of {worry_level}.")
+            inspections[i] += 1
+
+            new_worry_level = -1
+            if monkey.op[1] == "old":
+                if monkey.op[0] == "+":
+                    new_worry_level = (worry_level + worry_level) % divisor
+                    log(
+                        f"    Worry level is increased by itself to {new_worry_level}."
+                    )
+                elif monkey.op[0] == "*":
+                    new_worry_level = (worry_level * worry_level) % divisor
+                    log(
+                        f"    Worry level is multiplied by itself to {new_worry_level}."
+                    )
+            else:
+                if monkey.op[0] == "+":
+                    new_worry_level = (worry_level + int(monkey.op[1])) % divisor
+                    log(
+                        f"    Worry level increases by {int(monkey.op[1])} to {new_worry_level}."
+                    )
+                elif monkey.op[0] == "*":
+                    new_worry_level = (worry_level * int(monkey.op[1])) % divisor
+                    log(
+                        f"    Worry level is multiplied by {int(monkey.op[1])} to {new_worry_level}."
+                    )
+
+            log(
+                f"    Monkey gets bored with item. Worry level is divided by 3 to {new_worry_level}."
+            )
+
+            if new_worry_level % monkey.test == 0:
+                log(f"    Current worry level is divisible by {monkey.test}.")
+                monkeys[monkey.if_true].items.append(new_worry_level)
+                log(f'    Item with worry level {new_worry_level} is thrown to monkey {monkey.if_true}.')
+                monkey.items[j] = -1  # mark as thrown
+            else:
+                log(f"    Current worry level is not divisible by {monkey.test}.")
+                monkeys[monkey.if_false].items.append(new_worry_level)
+                log(f'    Item with worry level {new_worry_level} is thrown to monkey {monkey.if_false}.')
+                monkey.items[j] = -1  # mark as thrown
+
+
+# run simulation
+for i in range(10_000):
+    run_round()
+
+    for monkey in monkeys:
+        monkey.items = [item for item in monkey.items if item != -1]
+
+    print(f'--END OF ROUND {i+1}---')
+    for i, monkey in enumerate(monkeys):
+        log(f'Monkey {i}: {monkey.items}')
+
+
+for k, v in inspections.items():
+    log(f'Monkey {k} inspected items {v} times.')
+
+sorted_inspections = sorted(inspections.values(), reverse=True)
+log(sorted_inspections)
+
+monkey_business = sorted_inspections[0] * sorted_inspections[1]
+print(monkey_business)
